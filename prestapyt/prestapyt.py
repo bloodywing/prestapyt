@@ -280,7 +280,7 @@ class PrestaShopWebService(object):
             return self._parse(self._execute(url, 'POST', body=body, add_headers=headers)[2])
         elif xml is not None:
             headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-            return self._parse(self._execute(url, 'POST', body=urllib.urlencode({'xml': xml}), add_headers=headers)[2])
+            return self._parse(self._execute(url, 'POST', body=xml)[2])
         else:
             raise PrestaShopWebServiceError('Undefined data.')
 
@@ -471,12 +471,19 @@ class PrestaShopWebServiceDict(PrestaShopWebService):
 
         elems = dive(response, level=2)
         # when there is only 1 resource, we do not have a list in the response
+        # Some Resources are without attrs
         if not elems:
             return []
         elif isinstance(elems, list):
-            ids = [int(elem['attrs']['id']) for elem in elems]
+            try:
+                ids = [int(elem['attrs']['id']) for elem in elems]
+            except KeyError:
+                ids = [int(elem['id']) for elem in elems]
         else:
-            ids = [int(elems['attrs']['id'])]
+            try:
+                ids = [int(elems['attrs']['id'])]
+            except KeyError:
+                ids = [int(elems['id'])]
         return ids
 
     def get_with_url(self, url):
