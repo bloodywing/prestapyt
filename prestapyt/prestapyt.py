@@ -17,10 +17,11 @@
     Questions, comments? guewen.baconnier@gmail.com
 """
 
-import urllib
+#import urllib
 import warnings
 import httplib2
 import mimetypes
+from six.moves import urllib
 from . import xml2dict
 from . import dict2xml
 from . import unicode_encode
@@ -250,7 +251,7 @@ class PrestaShopWebService(object):
         """
         if self.debug:
             options.update({'debug': True})
-        return urllib.urlencode(options)
+        return urllib.parse.urlencode(options)
 
     def add(self, resource, content=None, files=None):
         """
