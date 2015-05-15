@@ -28,8 +28,12 @@ def _process(doc, tag, tag_value):
         tag_value = ''
 
     # Create a new node for simple values
-    if isinstance(tag_value, int) or isinstance(tag_value, (str, unicode)):
-        return _process_simple(doc, tag, tag_value)
+    try:
+        if isinstance(tag_value, int) or isinstance(tag_value, (str, unicode)):
+            return _process_simple(doc, tag, tag_value)
+    except NameError as e:
+        if isinstance(tag_value, int) or isinstance(tag_value, (str)):
+            return _process_simple(doc, tag, tag_value)
 
     # Return a list of nodes with same tag
     if isinstance(tag_value, list):
@@ -103,7 +107,10 @@ def _process_simple(doc, tag, tag_value):
     @return: node
     """
     node = doc.createElement(tag)
-    node.appendChild(doc.createTextNode(unicode(tag_value)))
+    try:
+        node.appendChild(doc.createTextNode(unicode(tag_value)))
+    except NameError as e:
+        node.appendChild(doc.createTextNode(tag_value))
     return node
 
 def dict2xml(data, encoding='UTF-8'):

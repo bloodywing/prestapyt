@@ -33,7 +33,7 @@ try:
 except ImportError as e:
     from xml.etree import ElementTree
 
-from .version import __author__, __version__
+from prestapyt.version import __author__, __version__
 
 
 class PrestaShopWebServiceError(Exception):
@@ -454,7 +454,7 @@ class PrestaShopWebServiceDict(PrestaShopWebService):
             if not response:
                 return False
             if level > 0:
-                return dive(response[response.keys()[0]], level=level-1)
+                return dive(response[list(response.keys())[0]], level=level-1)
             return response
 
         # returned response looks like :
@@ -475,15 +475,12 @@ class PrestaShopWebServiceDict(PrestaShopWebService):
         if not elems:
             return []
         elif isinstance(elems, list):
-            try:
-                ids = [int(elem['attrs']['id']) for elem in elems]
-            except KeyError:
-                ids = [int(elem['id']) for elem in elems]
+            ids = [int(elem['attrs']['id']) for elem in elems]
         else:
             try:
                 ids = [int(elems['attrs']['id'])]
             except KeyError:
-                ids = [int(elems['id'])]
+                return []
         return ids
 
     def get_with_url(self, url):
