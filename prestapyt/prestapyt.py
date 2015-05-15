@@ -21,15 +21,15 @@ import urllib
 import warnings
 import httplib2
 import mimetypes
-import xml2dict
-import dict2xml
-import unicode_encode
+from . import xml2dict
+from . import dict2xml
+from . import unicode_encode
 
 from xml.parsers.expat import ExpatError
 from distutils.version import LooseVersion
 try:
     from xml.etree import cElementTree as ElementTree
-except ImportError, e:
+except ImportError as e:
     from xml.etree import ElementTree
 
 from .version import __author__, __version__
@@ -181,7 +181,7 @@ class PrestaShopWebService(object):
             self.http_client.follow_all_redirects = True
 
         if self.debug:
-            print "Execute url: %s / method: %s" % (url, method)
+            print("Execute url: %s / method: %s" % (url, method))
 
         request_headers = self.headers.copy()
         request_headers.update(add_headers)
@@ -209,7 +209,7 @@ class PrestaShopWebService(object):
 
         try:
             parsed_content = ElementTree.fromstring(content)
-        except ExpatError, err:
+        except ExpatError as err:
             raise PrestaShopWebServiceError('HTTP XML response is not parsable : %s' % (err,))
         except ElementTree.ParseError as e:
             raise PrestaShopWebServiceError('HTTP XML response is not parsable : %s. %s' % (e, content[:512]))

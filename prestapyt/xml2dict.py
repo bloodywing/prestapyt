@@ -14,7 +14,7 @@ import re
 
 try:
     import xml.etree.cElementTree as ET
-except ImportError, err:
+except ImportError as err:
     import xml.etree.ElementTree as ET
 
 

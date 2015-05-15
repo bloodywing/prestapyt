@@ -156,7 +156,7 @@ if __name__ == '__main__':
                                                          'id': '8'},
                                                'value': None}],},}}
 
-    print dict2xml(x)
+    print(dict2xml(x))
 
     x = {'prestashop': {'address': {'address1': '1 Infinite Loop',
                                 'address2': None,
@@ -192,7 +192,7 @@ if __name__ == '__main__':
                                                 },
     }}}
 
-    print dict2xml(x)
+    print(dict2xml(x))
 
     import xml2dict
     from prestapyt import PrestaShopWebService
